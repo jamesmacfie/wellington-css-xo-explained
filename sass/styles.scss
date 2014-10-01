@@ -1,0 +1,264 @@
+/*
+ * Modified CSS from https://github.com/jamesmacfie/wellington-css-xo
+ */
+
+/* Third party */
+@import '../bower_components/font-awesome/scss/font-awesome';
+
+/* Variables */
+$bg: #323440;
+$text: #fff;
+$cellBorder: #56596a;
+$refresh: "\f021";
+$iconSize: 72px;
+$player1:  "\f00d";
+$player1Color: #f0336c;
+$player2:  "\f10c";
+$player2Color: #fdbb4b;
+
+/* Base */
+body {
+    background-color: $bg;
+    color: $text;
+    font-family: 'Open Sans';
+}
+
+
+/* Holder */
+.xo {
+    height: 450px;
+    margin: 50px auto;
+    position: relative;
+    width: 450px;
+}
+
+/* Labels/squares */
+.squareLabel {
+    cursor: pointer;
+    height: 150px;
+    position: absolute;
+    width: 150px;
+
+    &:before {
+        color: #fff;
+        font-family: 'FontAwesome';
+        font-size: $iconSize;
+        height: 110px;
+        padding-top: 40px;
+        position: absolute;
+        text-align: center;
+        width: 100%;
+    }
+}
+
+/* Label positioning */
+.left {
+    border-right: 5px solid $cellBorder;
+    left: 0;
+}
+
+.middle {
+    border-right: 5px solid $cellBorder;
+    left: 150px;
+}
+
+.right {
+    left: 300px;
+}
+
+.top {
+    top: 0;
+}
+
+.center {
+    border-top: 5px solid $cellBorder;
+    top: 150px;
+}
+
+.bottom {
+    border-top: 5px solid $cellBorder;
+    top: 300px;
+}
+
+/* Debug */
+
+.xo {
+    display: none;
+}
+
+body {
+    perspective: 480px;
+    perspective-origin: 1200px -120px;
+}
+
+.squares {
+    animation: moveSquares 0.3s linear;
+    animation-fill-mode: forwards;
+    border-radius: 3px;
+    height: 450px;
+    left: 170%;
+    position: absolute;
+    top: 100px;
+    width: 450px;
+}
+
+$squareColors: (
+    1: #4D5E78,
+    2: #4C5159,
+    3: #4D5E78,
+    4: #4C5159,
+    5: #4D5E78,
+    6: #4C5159,
+    7: #4D5E78,
+    8: #4C5159,
+    9: #4D5E78
+);
+
+@for $i from 1 through 9 {
+    .squares-#{$i} {
+        animation-delay: 0.25s * $i;
+        transform: rotateX(110deg) translateZ(-40px + (($i - 1) * 25)) translateY(10px * $i);
+
+        @for $j from 1 through 9 {
+            .squareLabel:nth-child(#{$j}) {
+                background-color: darken(map-get($squareColors, $i), ($j * 2));
+            }
+        }
+    }
+}
+
+/* User input overrides */
+.userInput {
+    animation-name: moveInput;
+    background-color: transparent;
+    left: 55%;
+    opacity: 0;
+
+    & > * {
+        background-color: transparent!important;
+        border: none!important;
+    }
+}
+
+.userInput-1 {
+    animation-delay: 3s;
+}
+
+@for $i from 2 through 6 {
+    .userInput-#{$i} {
+        animation-delay: 2s + $i;
+    }
+}
+
+.userInput-1 > .bottom.left {
+    animation-name: highlightInput;
+    animation-delay: 3.3s;
+    animation-fill-mode: forwards;
+    &:before {
+        color: $player2Color;
+        display: block;
+        content: $player2;
+    }
+}
+
+.userInput-2 > .center.middle {
+    animation-name: highlightInput;
+    animation-delay: 4.3s;
+    animation-fill-mode: forwards;
+    &:before {
+        color: $player1Color;
+        display: block;
+        content: $player1;
+    }
+}
+
+.userInput-3 > .center.left {
+    animation-name: highlightInput;
+    animation-delay: 5.3s;
+    animation-fill-mode: forwards;
+    &:before {
+        color: $player2Color;
+        display: block;
+        content: $player2;
+    }
+}
+
+.userInput-4 > .top.left {
+    animation-name: highlightInput;
+    animation-delay: 6.3s;
+    animation-fill-mode: forwards;
+    &:before {
+        color: $player1Color;
+        display: block;
+        content: $player1;
+    }
+}
+
+.userInput-5 > .bottom.middle {
+    animation-name: highlightInput;
+    animation-delay: 7.3s;
+    animation-fill-mode: forwards;
+    &:before {
+        color: $player2Color;
+        display: block;
+        content: $player2;
+
+    }
+}
+
+.userInput-6 > .bottom.right {
+    animation-name: highlightInput;
+    animation-delay: 8.3s;
+    animation-fill-mode: forwards;
+    &:before {
+        color: $player1Color;
+        display: block;
+        content: $player1;
+    }
+}
+
+/* End */
+.end {
+    animation-name: moveSquares;
+    animation-delay: 10s;
+    animation-fill-mode: forwards;
+    background-color: rgba(37, 171, 237, 0.8);
+    transform: rotateX(110deg) translateZ(200px) translateY(110px);
+}
+
+/* Animations */
+
+@keyframes moveSquares {
+    from {
+        left: 170%;
+    }
+
+    to {
+        left: 55%;
+    }
+}
+
+@keyframes moveInput {
+    0% {
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 1;
+        transform: rotateX(110deg) translateZ(180px) translateY(100px);
+    }
+}
+
+@keyframes highlightInput {
+    from {
+        background-color: transparent;
+    }
+
+    to {
+        background-color: rgba(255, 255, 255, 0.5);
+    }
+}
