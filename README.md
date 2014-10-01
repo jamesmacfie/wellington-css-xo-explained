@@ -1,4 +1,4 @@
-Wellington CSS Meetup - Tic tac toe
+Wellington CSS Meetup - Tic tac toe (explained)
 =
 
 ##To run##
